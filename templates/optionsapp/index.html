@@ -1,0 +1,193 @@
+{%load static%}
+<!--for image-->
+
+<!--starter template from bootstrap-->
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+    <title>{% block title %}Django Voting App{% endblock %}</title>
+</head>
+
+<body style="background-color: paleturquoise;">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-info">
+        <!--use navbar-dark for dark color, bg-dark-->
+        <!--fixed-top makes sure that navbar is visible even after scrolling down-->
+        <div class="container-fluid" style="background: beige;">
+            <a class="navbar-brand" href="#">Django voting app</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent" style="background: beige;">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#result">Result</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid" style="margin-bottom : 10rem;">
+
+        <div class="row">
+            <div class="col-md-6" style="margin : 1rem auto 0 auto;">
+                {% if error %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>ERROR!</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {%endif%}
+                {%if result%}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>{{q}} = {{ans}}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {%endif%}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6" style="margin : 1rem auto 0 auto;">
+                <!-- top, left, bottom, right-->
+                <img class="img-fluid" src="{% static 'proglang.png' %}"
+                    style="margin : auto 6rem 2rem auto; display : block;">
+                <div class="card">
+                    <div class="card-body" style="background: beige;">
+                        <form method="GET" action="{% url 'submitquery' %}">
+                            <input list='languages' class='form-control' name='languages' style='margin-bottom: 1rem;'>
+                            <!--list here refers to datalist with the id 'languages'-->
+                            <datalist id='languages' name>
+                                {%for eachlang in arr%}
+                                <option value='{{eachlang}}'>
+                                    {%endfor%}
+
+                            </datalist>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="submit" class="btn btn-success"
+                                        style="margin : 1rem auto 0 auto; display : block;">
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="reset" class="btn btn-danger"
+                                        style="margin : 1rem auto 0 auto; display : block;">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6" style="margin : 3rem auto;">
+                <p class="badge bg-success" id='reset' name='result'
+                    style="margin: auto; display: block; font-size: 2rem;">Result </p>
+                <hr>
+                <p>
+                    <a href="{%url 'sortdata'%}" class='btn btn-primary' style='margin: auto;'>Sort Data</a>
+                </p>
+                
+
+                <div class="row">
+                    <div class="col-md-12" style="margin : auto;">
+                        <div claa='table-resposive'>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Language</th>
+                                        <th scope="col">Count</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {%for lang,count in countdict.items %}
+                                    <tr>
+                                        <th scope="row">{{forloop.counter}}</th>
+                                        <!--forloop.counter defined by django-->
+                                        <!-- or -->
+                                        <!-- <td>{{forloop.counter}}</td> -->
+                                        <td>{{lang}}</td>
+                                        <td>
+                                            <!--{{count}}-->
+                                            <div class="progress">
+                                                <div class="progress-bar" role="progressbar" style="width: {{count}}%"
+                                                    aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{count}}</div>
+                                            </div>
+                                        </td>
+                                        <!-- <br> -->
+                                        <!--break-->
+                                    </tr>
+                                    {%endfor%}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6" style="margin : 3rem auto;">
+                <p class="badge bg-success" id='about' name='about'
+                    style="margin: auto; display: block; font-size: 2rem;">About </p>
+                <hr>
+                <p class="lead">
+                    Select your favorite coding language
+                </p>
+                <p class="lead">
+                    Pick your language and see the results
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <footer class='fixed-bottom navbar-light bg-info'
+                style="background :darkkhaki; color : white; text-align: center;">
+                <p>Thanks for using!</p>
+            </footer>
+        </div>
+    </div>
+
+
+    {% block content %}
+    <h1></h1>
+    {%endblock%}
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
+    -->
+</body>
+
+</html>

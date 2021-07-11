@@ -1,0 +1,149 @@
+{%load static%}
+<!--for image-->
+
+<!--starter template from bootstrap-->
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+    <title>{% block title %}Django Calculator App{% endblock %}</title>
+</head>
+
+<body style="background-color: paleturquoise;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light " style="background: beige;">
+        <!--fixed-top makes sure that navbar is visible even after scrolling down-->
+        <div class="container-fluid" style="background: beige;">
+            <a class="navbar-brand" href="#">Django calculator app</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent" style="background: beige;">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#instructions">Instructions</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid" style="margin-bottom : 40rem;">
+
+        <div class="row">
+            <div class="col-md-6" style="margin : 1rem auto 0 auto;">
+                {% if error %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>ERROR!</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {%endif%}
+                {%if result%}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>{{q}} = {{ans}}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {%endif%}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6" style="margin : 1rem auto 0 auto;">
+                <!-- top, left, bottom, right-->
+                <img class="img-fluid" src="{% static 'calc.jpg' %}"
+                    style="margin : auto 6rem 2rem auto; display : block;">
+                <div class="card">
+                    <div class="card-body" style="background: beige;">
+                        <form method="GET" action="{% url 'submit_query' %}">
+                            <div class="form-group">
+                                <input type="search" class="form-control" name="query" id='query'>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="submit" class="btn btn-success"
+                                        style="margin : 1rem auto 0 auto; display : block;">
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="reset" class="btn btn-danger"
+                                        style="margin : 1rem auto 0 auto; display : block;">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6" style="margin : 3rem auto;">
+                <p class="display-4" id='about' name='about'>About</p>
+                <hr>
+                <p class="lead">
+                    Our calculator performs simple operations
+                </p>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6" style="margin : 3rem auto;">
+                <p class="display-4" id='instructions' name='instructions'>Instructions</p>
+                <hr>
+                <ul class="list-group">
+                    <li class="list-group-item" style="background: beige;">+ for Addition</li>
+                    <li class="list-group-item" style="background: beige;">* for Multiplication</li>
+                    <li class="list-group-item" style="background: beige;">- for Subtraction</li>
+                    <li class="list-group-item" style="background: beige;">/ for Division</li>
+                    <li class="list-group-item" style="background: beige;">** for Exponent</li>
+                    <li class="list-group-item" style="background: beige;">// for Floor Division</li>
+                    <li class="list-group-item" style="background: beige;">% for Modulus</li>
+                    <li class="list-group-item" style="background: beige;">( ) for parenthesis </li>
+                </ul>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <footer class='fixed-bottom navbar-light' style="background :darkkhaki; color : white; text-align: center;">
+                <p>Thanks for using!</p>
+            </footer>
+        </div>
+    </div>
+
+
+    {% block content %}
+    <h1></h1>
+    {%endblock%}
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
+    -->
+</body>
+
+</html>
